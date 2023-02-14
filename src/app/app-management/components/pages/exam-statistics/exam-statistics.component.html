@@ -1,10 +1,21 @@
 <p-toast></p-toast>
+<app-loading *ngIf="loading"></app-loading>
 <div class="grid">
     <div class="col-12">
         <div class="card">
+            <div class="grid">
+                <div class = "col-8 ">
+                    <div class="field">
+                        <label for="email">Exam class ID </label>
+                        <input id="email" pTooltip="Email"  tooltipPosition="bottom"  pInputText [(ngModel)]="examClassId" required autofocus placeholder="Exam class ID" (click)="loadStatisticsData()" />
+                        <button pButton pRipple label="Thống kê" pTooltip="Thống kê" icon="pi pi-plus" class="p-button-success mr-2" (click)="loadStatisticsData()"   ></button>
+                    </div>
+    
+                </div>
+
+            </div>
             <div class="flex align-items-center justify-content-center mb-4" style="font-size: 2.5em">
                 {{examClassName}}
-
             </div>
             <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
         </div>

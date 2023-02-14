@@ -32,8 +32,8 @@ export class OnlineExamComponent implements OnInit {
   studentScore : number = -1;
   loading: boolean = true;
   ngOnInit(): void {
-    localStorage.setItem("studentId","4");
-    localStorage.setItem("examClassId","74");
+    // localStorage.setItem("studentId","4");
+    // localStorage.setItem("examClassId","74");
     this.studentId=localStorage.getItem("studentId");
     this.examClassId=localStorage.getItem("examClassId");
     this.header = new HttpHeaders().set(storageKey.AUTHORIZATION,this.authService.getToken());

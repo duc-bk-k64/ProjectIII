@@ -15,10 +15,10 @@ export class ExamStatisticsComponent implements OnInit {
   constructor(private authService: AuthService,private httpClient: HttpClient,private router: Router,private messageService: MessageService) { }
 
   ngOnInit(): void {
-    localStorage.setItem("examClassIdStatistic","74");
-    this.examClassId =  localStorage.getItem("examClassIdStatistic")||'';
+    // localStorage.setItem("examClassIdStatistic","74");
+    // this.examClassId =  localStorage.getItem("examClassIdStatistic")||'';
     this.header = new HttpHeaders().set(storageKey.AUTHORIZATION,this.authService.getToken());
-    this.loadStatisticsData();
+    // this.loadStatisticsData();
     this.basicOptions = {
       plugins: {
           legend: {
@@ -52,16 +52,19 @@ export class ExamStatisticsComponent implements OnInit {
   basicOptions : any;
   header : any;
   examClassId: string = '';
-  examClassName: string = "BÀI THI ĐẠI SỐ TUYẾN TÍNH"
+  examClassName: string ="";
   statisticsData: any[] = [];
   listLabel: string[] = [];
   listCorrectAnswer: number[] = [];
   listIncorrectAnswer: number[] = [];
   listTotalAnswer: number[] = [];
+  loading: boolean = false;
   async loadStatisticsData() {
+    this.loading = true;
     await this.httpClient.get<any>("/api/questions/exam-class/"+this.examClassId,{headers: this.header}).toPromise().then(data => {
       try {
         this.statisticsData=data;
+        this.examClassName =  "BÀI THI ĐẠI SỐ TUYẾN TÍNH";
         // console.log(this.statisticsData);
      } catch (error) {
          this.messageService.add({severity:data.title, summary:data.detail});
@@ -73,6 +76,7 @@ export class ExamStatisticsComponent implements OnInit {
       // this.router.navigate(['/auth/error']);
      }
      );
+     this.loading = false;
      for(let i = 0;i<this.statisticsData.length;i++) {
       this.listLabel.push("Câu "+(i+1));
       this.listCorrectAnswer.push(this.statisticsData[i].noCorrectAnswered);
