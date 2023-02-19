@@ -13,7 +13,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {DropdownModule} from 'primeng/dropdown';
-
+import { CheckboxModule } from 'primeng/checkbox';
 import {PasswordModule} from 'primeng/password';
 import { AccountManagementComponent } from './account-management/account-management.component';
 import { ExamclassManagementComponent } from './examclass-management/examclass-management.component';
@@ -37,6 +37,8 @@ import { DialogAddStudentComponent } from './examclass-management/dialog-add-stu
 import { ExamPointStatisticsComponent } from './exam-point-statistics/exam-point-statistics.component';
 import { ViewExamComponent } from './view-exam/view-exam.component';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import { SubjectManagementComponent } from './subject-management/subject-management.component';
+import { QuestionManagementComponent } from './question-management/question-management.component';
 @NgModule({
     declarations: [
    
@@ -49,12 +51,15 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
             ExamclassDetailComponent,
             DialogAddStudentComponent,
             LoadingComponent,
-            ViewExamComponent
+            ViewExamComponent,
+            SubjectManagementComponent,
+            QuestionManagementComponent
 
   ],
     imports: [
         CommonModule,
         PagesRoutingModule,
+        CheckboxModule,
         ToastModule,
         TableModule,
         ButtonModule,

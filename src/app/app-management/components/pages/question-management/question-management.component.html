@@ -1,0 +1,287 @@
+<p-toast></p-toast>
+<app-loading *ngIf="loading"></app-loading>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<div class="grid">
+    <div class="card col-12 mt-3">
+        <p-toolbar styleClass="mb-4">
+            <h2 class="my-2">Danh sách câu hỏi</h2>
+            <ng-template pTemplate="left">
+                <div class="my-2">
+                    <button pButton pRipple label="New" pTooltip="Tạo câu hỏi" icon="pi pi-plus"
+                        class="p-button-success mr-2" (click)="showCreateDialogFunc()"></button>
+                </div>
+            </ng-template>
+        </p-toolbar>
+        <p-table #table [value]="listQuestions" [(selection)]="selectedQuestion"
+            [globalFilterFields]="['content','type','numberOfAnswer', 'numberOfCorrectAnswer', 'level', 'note']"
+            responsiveLayout="scroll" [rows]="10" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple"
+            [rowHover]="true" dataKey="id">
+            <ng-template pTemplate="caption">
+                <div class="flex">
+                    <p-dropdown [options]="subjects" [(ngModel)]="selectedSubject" optionLabel="value" [filter]="true"
+                        filterBy="value" [showClear]="true" placeholder="Chọn môn học"
+                        (ngModelChange)="filterBySubjectId()">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value" *ngIf="selectedSubject">
+                                <div>{{selectedSubject.value}}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-subject pTemplate="item">
+                            <div class="country-item">
+                                <div>{{subject.value}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                            placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                        STT
+                    </th>
+                    <th>
+                        <div>
+                            Đề bài
+                            <p-columnFilter type="text" field="content" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Kiểu câu hỏi
+                            <p-columnFilter type="text" field="type" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Số câu trả lời
+                            <p-columnFilter type="number" field="numberOfAnswer" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Số câu trả lời đúng
+                            <p-columnFilter type="number" field="numberOfCorrectAnswer" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Mức độ khó
+                            <p-columnFilter type="text" field="level" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Ghi chú
+                            <p-columnFilter type="text" field="note" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th style="width: 3rem">
+                    </th>
+                    <th style="width: 3rem">
+                    </th>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="body" let-obj let-ri="rowIndex">
+                <tr>
+                    <td>{{ri + 1}}</td>
+                    <td>{{obj.content}}</td>
+                    <td>{{obj.type}}</td>
+                    <td>{{obj.numberOfAnswer}}</td>
+                    <td>{{obj.numberOfCorrectAnswer}}</td>
+                    <td>{{obj.level}}</td>
+                    <td>{{obj.note}}</td>
+                    <td>
+                        <button pButton pTooltip="Cập nhật câu hỏi" tooltipPosition="left" pRipple type="button"
+                            icon="pi pi-check" class="p-button-rounded" (click)="showUpdateDialogFunc(obj)"></button>
+                    </td>
+                    <td>
+                        <button pButton pRipple pTooltip="Xóa tài câu hỏi" tooltipPosition="left" type="button"
+                            icon="pi pi-times" class="p-button-rounded p-button-danger"
+                            (click)="showDeleteDialogFunc(obj, 'question')"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4">No data to display</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<p-dialog [(visible)]="showDialog" [maximizable]="true" [resizable]="false" [contentStyle]="{'overflow': 'scroll'}"
+    [responsive]="true" [draggable]="false" [header]="dialogTitle" [breakpoints]="{'960px': '75vw', '640px': '100vw'}"
+    class="p-fluid" [style]="{width:'50vw', height: 'auto'}" [modal]="true">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="subjectInfo">Học phần</label>
+            <input type="text" pTooltip="Học phần" tooltipPosition="bottom" pInputText name="subjectInfo"
+                [(ngModel)]="selectedSubject.value" disabled />
+        </div>
+        <div class="field">
+            <label for="content">Nội dung câu hỏi</label>
+            <input type="text" pTooltip="Nội dung câu hỏi" tooltipPosition="bottom" pInputText name="content"
+                [(ngModel)]="questionModel.content" required autofocus placeholder="Nội dung câu hỏi"
+                [ngClass]="{'ng-invalid ng-dirty' : !questionModel.content}" />
+            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="!questionModel.content">Không được để trống
+                nội dung câu hỏi.</small>
+        </div>
+        <div class="grid">
+            <div class="col-12 lg:col-6">
+                <div class="field">
+                    <label for="type">Kiểu câu hỏi</label>
+                    <p-dropdown [options]="questionTypes" [(ngModel)]="questionModel.type"
+                        placeholder="Chọn kiểu câu hỏi" optionLabel="key" [showClear]="true" name="type"
+                        optionValue="value"></p-dropdown>
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="!questionModel.type">Không được để
+                        trống
+                        Kiểu câu hỏi.</small>
+                </div>
+            </div>
+            <div class="col-12 lg:col-6">
+                <div class="field">
+                    <label for="level">Mức độ</label>
+                    <p-dropdown [options]="questionLevels" [(ngModel)]="questionModel.level" placeholder="Chọn mức độ"
+                        optionLabel="key" [showClear]="true" name="level" optionValue="value"></p-dropdown>
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="!questionModel.level">Không được để
+                        trống
+                        Mức độ.</small>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="grid">
+            <div class="col-12 lg:col-6">
+                <div class="field">
+                    <label for="NoA">SL câu trả lời</label>
+                    <input type="number" pTooltip="Số lượng câu trả lời" tooltipPosition="bottom" pInputText name="NoA"
+                        [(ngModel)]="questionModel.numberOfAnswer" required autofocus placeholder="Số lượng câu trả lời"
+                        min="1" disabled/>
+                </div>
+            </div>
+            <div class="col-12 lg:col-6">
+                <div class="field">
+                    <label for="NoCA">SL CTL đúng</label>
+                    <input type="number" pTooltip="Số lượng câu trả lời đúng" tooltipPosition="bottom" pInputText
+                        name="NoCA" [(ngModel)]="questionModel.numberOfCorrectAnswer" required autofocus
+                        placeholder="Số lượng CTL đúng" min="1" disabled/>
+                </div>
+            </div>
+        </div> -->
+        <div class="field">
+            <label for="note">Ghi chú</label>
+            <input type="text" pTooltip="Ghi chú" tooltipPosition="bottom" pInputText name="note"
+                [(ngModel)]="questionModel.note" autofocus placeholder="Ghi chú" />
+        </div>
+        <div class="flex flex-row align-items-center justify-content-between">
+            <h3>Danh sách đáp án</h3>
+            <div class="w-10rem">
+                <button pButton pRipple label="New" pTooltip="Thêm đáp án" icon="pi pi-plus" class="p-button-success mr-2"
+                    (click)="addAnswer()"></button>
+            </div>
+        </div>
+        <p-table #tableAnswer [value]="listAnswerModel" [globalFilterFields]="['subjectCode','name','note']"
+            responsiveLayout="scroll" [rows]="10" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple"
+            [rowHover]="true" dataKey="id" editMode="row">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                        <div>
+                            Nội dung
+                            <p-columnFilter type="text" field="content" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Đúng / Sai
+                            <p-columnFilter type="text" field="isCorrect" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            Ghi chú
+                            <p-columnFilter type="text" field="note" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th style="width: 3rem">
+                    </th>
+                    <th style="width: 3rem">
+                    </th>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="body" let-obj let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="obj">
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="obj.content" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{obj.content}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <p-checkbox [(ngModel)]="obj.isCorrect" [binary]="true"></p-checkbox>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <p-checkbox [value]="obj.isCorrect" [(ngModel)]="obj.isCorrect" [readonly]="true"
+                                    [binary]="true"></p-checkbox>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="obj.note">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{obj.note}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(obj)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(obj)"
+                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(obj, ri)"
+                                class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
+                    </td>
+                    <td>
+                        <button pButton pRipple pTooltip="Xóa câu trả lời" tooltipPosition="left" type="button"
+                            icon="pi pi-times" class="p-button-rounded p-button-danger"
+                            (click)="showDeleteDialogFunc(obj, 'answer')"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4">No data to display</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-text" (click)="onSave()"></button>
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-text" (click)="onCloseDialog()"></button>
+    </ng-template>
+</p-dialog>

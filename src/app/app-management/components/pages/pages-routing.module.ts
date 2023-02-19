@@ -6,10 +6,14 @@ import { RouterModule } from '@angular/router';
 import { ExamclassManagementComponent } from './examclass-management/examclass-management.component';
 import { ExamPointStatisticsComponent } from './exam-point-statistics/exam-point-statistics.component';
 import { ViewExamComponent } from './view-exam/view-exam.component';
+import { SubjectManagementComponent } from './subject-management/subject-management.component';
+import { QuestionManagementComponent } from './question-management/question-management.component';
 @NgModule({
     imports: [RouterModule.forChild([
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'account', component:AccountManagementComponent},
+        { path: 'subject', component: SubjectManagementComponent},
+        { path: 'question', component: QuestionManagementComponent},
         { path:'examclass',component:ExamclassManagementComponent},
         { path: 'exam-statistics', component: ExamStatisticsComponent },
         { path:'examclass/:id', component:ExamclassDetailComponent},
