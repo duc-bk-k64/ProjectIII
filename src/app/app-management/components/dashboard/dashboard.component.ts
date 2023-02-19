@@ -1,111 +1,102 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-// import { ProductService } from '../../service/product.service';
-import { Subscription } from 'rxjs';
-import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import {Message} from 'primeng/api';
-import {MessageService} from 'primeng/api';
-
+import { Component, OnInit } from '@angular/core';
+import { BaseClass } from 'src/app/BaseClass';
+// import { BaseClass } from 'src/app/base-class';
+import { ExamClassService } from 'src/app/app-management/service/examclass.service';
+import { MessageService } from 'primeng/api';
+import { getServerApiUrl, storageKey } from 'src/app/app-constant';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from 'src/app/app-management/service/auth.service';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from 'primeng/dynamicdialog';
 @Component({
+    selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent extends BaseClass implements OnInit {
+    // filterExam: FormControl
+    header: any;
 
-    items!: MenuItem[];
+    listExam: any[] = [];
+    dataSource = new MatTableDataSource<any>();
+    timeNow = Date.now();
+    displayedColumns: string[] = [
+        'name',
+        'startTime',
+        'endTime',
+        'numberOfQuestion',
+        'numberOfStudent',
+    ];
+    dataTable: any = [];
+    filterLopThi = new FormControl('');
+    filteredLopThi: any = [];
+    dsLopThi: any;
+    constructor(
+        public service: ExamClassService,
+        private httpClient: HttpClient,
+        private router: Router,
+        private messageService: MessageService,
+        private authService: AuthService,
+        public dialog: MatDialog,
+        public dialogService: DialogService
+    ) {
+        super();
+    }
 
-    products!: Product[];
-
-    chartData: any;
-
-    chartOptions: any;
-
-    subscription!: Subscription;
-
-    constructor( public layoutService: LayoutService,private messageService: MessageService) {
-        this.subscription = this.layoutService.configUpdate$.subscribe(() => {
-            this.initChart();
+    ngOnInit(): void {
+        this.header = new HttpHeaders().set(
+            storageKey.AUTHORIZATION,
+            this.authService.getToken()
+        );
+        this.getList();
+        this.filterLopThi.valueChanges.subscribe({
+            next: (value) => {
+                this.filteredLopThi = this.dsLopThi.filter();
+            },
         });
     }
-
-    ngOnInit() {
-        this.initChart();
-        // this.productService.getProductsSmall().then(data => this.products = data);
-
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
-        
-    
+    formatDate(time : Date){
+        return time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).toString()+' ' + time.getDate() +'/'+ time.getMonth()+1 +'/'+time.getFullYear();
     }
-
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
-        };
+    getDuration(startTime: Date, endTime:Date){
+        var duration =  Math.floor((endTime.getTime() - startTime.getTime())/1000);
+        if(duration == 3600) 
+            return "60m";
+        var hour = Math.floor(duration/(60*60)) ?Math.floor(( duration/(60*60))).toString()+'h' : '' ;
+        var min = Math.floor( duration/60) % 60 +'m' ;
+        return hour +min;
     }
+    getList() {
+        this.service.getListExamOfStudent().subscribe((response) => {
+            this.listExam = response.map((item:any) => {
+                let state; 
+                item.startTime ='2023-02-19T20:05:25.175Z';
+                item.endTime ='2023-02-19T21:05:25.175Z';
 
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
+                if(Date.now() < Date.parse(item.startTime)){
+                    state = 'initial'
+                    item.countdown = this.getDuration(new Date,  new Date(item.startTime))
+                }
+                else if( Date.now() < Date.parse(item.endTime)){
+                    state = 'running'
+                    item.countdown = this.getDuration(new Date,  new Date(item.endTime))
+                }
+                else state = 'timeout'
+                item.state = state;
+                let startTime = new Date(item.startTime)
+                let endTime = new Date(item.endTime)
 
-    showToast()  {
-        this.messageService.add({severity:'success', summary:'Service Message', detail:'Via MessageService'});
+                item.startTime =  this.formatDate(startTime )
+                item.endTime =  this.formatDate( endTime )
+                item.duration = this.getDuration(startTime,endTime)
+                return item
+            
+            });
+        });
     }
 }
