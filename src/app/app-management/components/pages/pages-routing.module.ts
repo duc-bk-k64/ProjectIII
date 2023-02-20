@@ -1,3 +1,4 @@
+import { StudentExamListComponent } from './student-exam-list/student-exam-list.component';
 import { ExamStatisticsComponent } from './exam-statistics/exam-statistics.component';
 import { AccountManagementComponent } from './account-management/account-management.component';
 import { ExamclassDetailComponent } from './examclass-management/examclass-detail/examclass-detail.component';
@@ -14,11 +15,12 @@ import { QuestionManagementComponent } from './question-management/question-mana
         { path: 'account', component:AccountManagementComponent},
         { path: 'subject', component: SubjectManagementComponent},
         { path: 'question', component: QuestionManagementComponent},
-        { path:'examclass',component:ExamclassManagementComponent},
+        { path: 'examclass',component:ExamclassManagementComponent},
         { path: 'exam-statistics', component: ExamStatisticsComponent },
-        { path:'examclass/:id', component:ExamclassDetailComponent},
-        {path : 'exam-point-statistics',component:ExamPointStatisticsComponent},
-        {path : 'view-exam',component:ViewExamComponent},
+        { path: 'examclass/:id', component:ExamclassDetailComponent},
+        { path: 'exam-point-statistics',component:ExamPointStatisticsComponent},
+        { path: 'view-exam',component:ViewExamComponent},
+        { path: 'student-exam-list',component:StudentExamListComponent},
     ])],
     exports: [RouterModule]
 })

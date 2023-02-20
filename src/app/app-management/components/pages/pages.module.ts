@@ -1,3 +1,4 @@
+import { StudentExamListComponent } from './student-exam-list/student-exam-list.component';
 import { AppComponent } from './../../../app.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -41,20 +42,18 @@ import { SubjectManagementComponent } from './subject-management/subject-managem
 import { QuestionManagementComponent } from './question-management/question-management.component';
 @NgModule({
     declarations: [
-   
-  
     AccountManagementComponent,
-             ExamclassManagementComponent,
-             ExamStatisticsComponent,
-             DialogAddExamComponent,
-            ExamPointStatisticsComponent,
-            ExamclassDetailComponent,
-            DialogAddStudentComponent,
-            LoadingComponent,
-            ViewExamComponent,
-            SubjectManagementComponent,
-            QuestionManagementComponent
-
+    ExamclassManagementComponent,
+    ExamStatisticsComponent,
+    DialogAddExamComponent,
+    ExamPointStatisticsComponent,
+    ExamclassDetailComponent,
+    DialogAddStudentComponent,
+    LoadingComponent,
+    ViewExamComponent,
+    SubjectManagementComponent,
+    QuestionManagementComponent,
+    StudentExamListComponent
   ],
     imports: [
         CommonModule,
