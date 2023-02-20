@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { AppModule } from 'src/app/app.module';
+import { PagesModule } from '../../pages/pages.module';
 @NgModule({
     imports: [
         CommonModule,
@@ -17,9 +19,13 @@ import { ToastModule } from 'primeng/toast';
         InputTextModule,
         FormsModule,
         PasswordModule,
-        ToastModule
+        ToastModule,
+        PagesModule
 
     ],
-    declarations: [LoginComponent]
+    declarations: [LoginComponent],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ],
 })
 export class LoginModule { }

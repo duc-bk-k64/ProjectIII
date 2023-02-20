@@ -1,0 +1,91 @@
+<div class="p-fluid grid" [formGroup]="formControl">
+   
+        <div class="field col-12 ">
+            <span class="p-float-label">
+                <input type="text" pInputText formControlName="name" [(ngModel)]="config.data.item.name"/>
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Tên lớp thi</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-6">
+           
+            <span class="p-float-label">
+                <p-inputNumber inputId="number" formControlName="numberOfStudents" [(ngModel)]="config.data.item.numberOfStudents" ></p-inputNumber>
+                <label for="number" >Số lượng sinh viên</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <p-inputNumber formControlName="numberOfQuestions" [(ngModel)]="config.data.item.numberOfQuestions"  ></p-inputNumber>
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Số lượng câu hỏi</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+           
+            <span class="p-float-label">
+                <p-inputNumber formControlName="easyQuestionRate" [(ngModel)]="config.data.item.easyQuestionRate"  ></p-inputNumber>
+
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Phần trăm câu dễ (%) </label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+          
+            <span class="p-float-label">
+                <p-inputNumber formControlName="mediumQuestionRate" [(ngModel)]="config.data.item.mediumQuestionRate"  ></p-inputNumber>
+
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Phần trăm câu trung bình (%) </label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+           
+            <span class="p-float-label">
+                <p-inputNumber formControlName="difficultQuestionRate" [(ngModel)]="config.data.item.difficultQuestionRate"  ></p-inputNumber>
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Phần trăm câu khó (%) </label>
+            </span>
+        </div>
+        <!-- <div class="flex-row" fxLayoutAlign="start center">
+            <p fxFlex="23" style="width: 35%; font-weight: bold;">Trạng thái</p>
+            <mat-form-field floatLabel="always" appearance="outline" fxFlex="180">
+                <textarea matInput formControlName="status" [(ngModel)]="config.data.item.status">
+                    </textarea>
+            </mat-form-field>
+        </div> -->
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <input type="text" pInputText formControlName="status" [(ngModel)]="config.data.item.status"/>
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Trạng thái</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <input type="text" pInputText formControlName="note" [(ngModel)]="config.data.item.note"/>
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Ghi chú</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-6">
+            <div class="field col-12 md:col-4">
+                <label for="time">Thời gian bắt đầu</label>
+                <p-calendar [(ngModel)]="config.data.item.startTime" [showTime]="true" [showSeconds]="true" formControlName="startTime"  inputId="time" ></p-calendar>
+            </div>
+            
+        </div>
+        <div class="field col-12 md:col-6">
+            <div class="field col-12 md:col-4">
+                <label for="time">Thời gian kết thúc</label>
+                <p-calendar [(ngModel)]="config.data.item.endTime" [showTime]="true" [showSeconds]="true" formControlName="endTime"  inputId="time" ></p-calendar>
+            </div>
+        </div>
+        
+         
+        <div class="field col-12 ">
+            <span class="p-float-label">
+                <input type="text" pInputText formControlName="isComeBack" [(ngModel)]="config.data.item.isComeBack"/>
+                <label for="float-input" fxFlex="23" style="width: 35%; font-weight: bold;">Ghi chú</label>
+            </span>
+        </div>
+        <div mat-dialog-actions style="text-align: right ; float: left;" class="fs-14">
+            <button mat-raised-button color="secondary" (click)="addExam()">
+                {{ !config.data.item.id ? "Thêm mới lớp thi" : "Cập nhật lớp thi" }} 
+            </button>
+            
+        </div>
+</div>

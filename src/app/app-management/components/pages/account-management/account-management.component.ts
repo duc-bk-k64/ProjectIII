@@ -47,6 +47,7 @@ export class AccountManagementComponent implements OnInit {
   accountUpdate: Account = {};
   dataUpdate: DataUpdateAccount = {
   }
+  loading:boolean = true;
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt1!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
@@ -56,6 +57,7 @@ export class AccountManagementComponent implements OnInit {
  async loadAccount() {
   this.listAccountStudent = [];
   this.listAccountAdminAndTeacher = [];
+  this.loading = true;
      await this.httpClient.get<any>("/api/account-systems?page=0&size=100",{headers: this.header}).toPromise().then(data => {
       try {
         this.listAccount=data.content;
@@ -72,6 +74,7 @@ export class AccountManagementComponent implements OnInit {
       if(this.listAccount[i].roles == "STUDENT") this.listAccountStudent.push(this.listAccount[i]);
       else this.listAccountAdminAndTeacher.push(this.listAccount[i]);
      }
+     this.loading = false;
 
   }
   showCreateDialogFunc() {
@@ -90,6 +93,7 @@ export class AccountManagementComponent implements OnInit {
     this.accountUpdate = {}
   }
   async updateAccount() {
+    this.loading = true;
     this.dataUpdate.email=this.accountUpdate.email;
     this.dataUpdate.note = this.accountUpdate.note;
     this.dataUpdate.roles = this.accountUpdate.roles;
@@ -103,8 +107,10 @@ export class AccountManagementComponent implements OnInit {
     this.messageService.add({severity:'error', summary: 'Error', detail: 'Có lỗi xảy ra'});
     // this.router.navigate(['/auth/error']);
    }
+
    )
-   console.log("update");
+   this.loading  = false;
+  //  console.log("update");
    this.loadAccount();
    this.showUpdateDialog = false;
   }

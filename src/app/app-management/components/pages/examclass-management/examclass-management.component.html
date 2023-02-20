@@ -7,19 +7,22 @@
                 <div class="flex-row">
                 <mat-form-field floatLabel="always" appearance="outline">
                     <mat-select >
-                        <!-- <mat-option>
+                        <mat-option>
                             <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
-                                [formControl]="filterExam"></ngx-mat-select-search>
-                        </mat-option> -->
+                                [formControl]="filterLopThi"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of filteredLopThi" [value]="item.name">
+                            {{item.view}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
                 </div>
                 <div class="row">
-                <button pButton pRipple label="Tạo mới lớp thi" pTooltip="Tạo mới lớp thi" icon="pi pi-plus" class="p-button-success mr-2" ></button>
+                <button pButton pRipple label="Tạo mới lớp thi" pTooltip="Tạo mới lớp thi" icon="pi pi-plus" class="p-button-success mr-2" (click)="openDialogAdd()"></button>
             </div>
             </div>
             <div fxLayout="row" fxLayoutWrap>
-                <mat-card class="example-card" *ngFor="let item of dataTable">
+                <!-- <mat-card class="example-card" *ngFor="let item of dataTable">
                 <mat-card-title >
                        <p>{{item.name}}</p>
                 </mat-card-title>
@@ -30,7 +33,22 @@
                     <p>Số lượng sinh viên : {{item.numberOfStudents }} &#160; <span style="color: red;">*</span> Số câu hỏi : {{item.numberOfQuestions}} </p>
                 </mat-card-content>
                 <button pButton pRipple pTooltip="Xóa lớp thi" tooltipPosition="left" type="button" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="deleteExam(item)"></button>
-            </mat-card>
+                <button pButton pRipple pTooltip="Chỉnh sửa lớp thi" tooltipPosition="left" type="button" icon="pi pi-cog" class="p-button-rounded p-button-rounded"   (click)="openDialogUpdate(item)"></button>
+            </mat-card> -->
+            <p-card class="card-item" header="{{item.name}}" *ngFor="let item of dataTable"   styleClass="p-card-shadow" >
+                <!-- <ng-template pTemplate="header">
+                    <img alt="Card" src="assets/showcase/images/usercard.png">
+                </ng-template> -->
+                <ng-template pTemplate="abc">
+                    Thời gian mở : {{item.startTime | date:'dd/MM/yyyy h:mm a'}} &#160;  <span style="color: red;">*</span>  Thời gian kết thúc {{item.endTime | date:'dd/MM/yyyy h:mm a'}}
+                </ng-template>
+                <p>Số lượng sinh viên : {{item.numberOfStudents }} &#160; <span style="color: red;">*</span> Số câu hỏi : {{item.numberOfQuestions}} </p>
+      
+                <ng-template pTemplate="footer">
+                    <p-button label="Update" icon="pi pi-cog" class="p-button-rounded p-button-rounded"   (click)="openDialogUpdate(item)"></p-button>
+                    <p-button label="Delete" icon="pi pi-times" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}" (click)="deleteExam(item)"></p-button>
+                </ng-template>
+            </p-card>
             </div>
             <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 fs-13" >
                 <ng-container matColumnDef="name">

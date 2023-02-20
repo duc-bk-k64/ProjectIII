@@ -1,0 +1,57 @@
+.container {
+    display: "flex";
+    flex-direction: row;
+    
+    flex:6;
+    
+}
+.flex-row{
+    flex:1;
+    display: "flex";
+    flex-direction: "row";
+}
+.flex-5 {
+    flex:5;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-3 {
+    flex:3;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-2 {
+    flex:2;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-1 {
+    flex:1;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-05 {
+    flex:0.5;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-row{
+    display: flex;
+    flex:1; 
+    flex-direction: row;
+}
+.full-width {
+    width:100%;
+}
+.center-row {
+    align-items: center;
+}
+ngx-mat-select-search {
+    ::ng-deep .mat-select-search-inner {
+        height: 3.25rem;
+        box-shadow: none;
+    }
+}
+.mat-tree-node {
+    min-height: 0 !important
+}

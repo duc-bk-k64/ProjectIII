@@ -1,3 +1,4 @@
+import { async } from 'rxjs';
 import { AuthService } from './../../../service/auth.service';
 import { getServerApiUrl,storageKey } from './../../../../app-constant';
 import { Component } from '@angular/core';
@@ -35,26 +36,26 @@ export class LoginComponent {
     password: any;
     username: any;
     rememberMe: boolean = false;
+    loading: boolean = false;
 
     constructor(public layoutService: LayoutService,private messageService: MessageService,private authService:AuthService ,private router: Router,public httpClient: HttpClient, public secureStorageService : SecureStorageService ) { }
-    login() {
+     async login() {
         // console.log(this.rememberMe)
-        this.httpClient.post<any>('/api/authenticate',{'username':this.username,'password':this.password,'rememberMe':this.rememberMe}).subscribe({
-            next: data => {
-                try {
+       this.loading = true;
+       await this.httpClient.post<any>('/api/authenticate',{'username':this.username,'password':this.password,'rememberMe':this.rememberMe}).toPromise().then(
+           data => {
+               
                     this.authService.setToken(data.id_token);
                     this.router.navigate([this.authService.getRedirectUrl()]);
-                } catch (error) {
-                    this.messageService.add({severity:data.title, summary:data.detail});
-                }
                
             },
-            error: error => {
-                this.router.navigate(['/auth/error']);
+            error => {
+                this.messageService.add({severity:"error", summary:"Username or password incorrect"});
 
             }
             
-        })
+        )
+        this.loading = false;
         
 
     }

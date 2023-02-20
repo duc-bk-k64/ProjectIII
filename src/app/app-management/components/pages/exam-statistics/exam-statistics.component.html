@@ -1,5 +1,15 @@
 <p-toast></p-toast>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <div class="flex align-items-center justify-content-center mb-4" style="font-size: 2.5em">
+                {{examClassName}}
 
+            </div>
+            <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+        </div>
+    </div>
+</div>
 <!-- 
 <label for="subject">Chọn môn học</label>
 <p-multiSelect id="subject" [options]="subjectList" [(ngModel)]="subjectSelected" display="chip"></p-multiSelect>

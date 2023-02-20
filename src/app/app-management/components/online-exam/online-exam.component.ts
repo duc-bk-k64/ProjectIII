@@ -14,13 +14,10 @@ import { Exam } from '../../Model/Exam';
 })
 export class OnlineExamComponent implements OnInit {
 
-  constructor(private route:ActivatedRoute,public http: HttpClient,public router: Router, private authService: AuthService,private messageService: MessageService) {
-    this.route.paramMap.subscribe((params)=> {
-      this.id=params.get('id');
-
-     })
+  constructor(public http: HttpClient,public router: Router, private authService: AuthService,private messageService: MessageService) {
+   
    }
-  id: any;
+
   selected: any;
   questions : Question[] = [];
   answers : any[] = [];
@@ -30,10 +27,15 @@ export class OnlineExamComponent implements OnInit {
   answerDTO : Answer = {};
   exam: Exam[] = []
   typeQuestion = ['SINGLE_SELECT','MULTI_SELECT','FILL_IN_BLANK']
-  studentId = 4;
-  examClassId = 74;
+  studentId:any;
+  examClassId:any;
   studentScore : number = -1;
+  loading: boolean = true;
   ngOnInit(): void {
+    localStorage.setItem("studentId","4");
+    localStorage.setItem("examClassId","74");
+    this.studentId=localStorage.getItem("studentId");
+    this.examClassId=localStorage.getItem("examClassId");
     this.header = new HttpHeaders().set(storageKey.AUTHORIZATION,this.authService.getToken());
     this.loadQuestion();
     var x = setInterval(()=>{
@@ -56,14 +58,15 @@ export class OnlineExamComponent implements OnInit {
     
   }
   countDown:any;
-  counter = 30;
+  counter = 1800;
   tick = 1000;
   min :any;
   second : any;
   header:any;
   studentAnswerSubmit : any[] = [];
   async submit() {
-    
+    this.loading = true;
+    this.expired = true;
     for(let i=0; i<this.questions.length;i++) {
       if(this.listAnswer[i]==undefined) this.listAnswer[i] = '-1';
       if(this.questions[i].type == "FILL_IN_BLANK") {
@@ -91,9 +94,12 @@ export class OnlineExamComponent implements OnInit {
     await this.http.post<any>("/api/student-answers/submit",{"studentAnswerDTOS":this.studentAnswerSubmit},{headers: this.header}).toPromise().then(
       data => {
         this.studentScore = data;
+        localStorage.setItem("score",data);
         console.log(data)
         this.messageService.add({severity:'success', summary:'Nộp bài thành công'});
         this.counter=0;
+        setTimeout(()=>{this.router.navigate(['/pages/home']);},2000)
+        
       },
       error => {
         console.log(error.error)
@@ -101,6 +107,7 @@ export class OnlineExamComponent implements OnInit {
 
       }
     )
+    this.loading = false;
   }
   async loadQuestion() {
     await this.http.get<any>("/api/student-answers/exam?studentId="+this.studentId+"&examClassId="+this.examClassId,{headers: this.header}).toPromise().then(
@@ -130,6 +137,7 @@ export class OnlineExamComponent implements OnInit {
         this.questions.push(qs)
       }
     }
+    this.loading =false;
     // console.log(this.questions)
    
   

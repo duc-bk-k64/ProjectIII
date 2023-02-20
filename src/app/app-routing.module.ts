@@ -19,7 +19,7 @@ import { OnlineExamComponent } from './app-management/components/online-exam/onl
             { path: 'auth', loadChildren: () => import('./app-management/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./app-management/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'pages/notfound', component: NotfoundComponent },
-            { path: 'onlineExam/:id', component:OnlineExamComponent, canActivate:[AuthGuard]},
+            { path: 'onlineExam', component:OnlineExamComponent, canActivate:[AuthGuard]},
             { path: '**', redirectTo: 'pages/notfound' },
     
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })

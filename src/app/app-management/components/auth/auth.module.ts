@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { AppModule } from './../../../app.module';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -8,7 +9,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
-
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PagesModule } from '../pages/pages.module';
 @NgModule({
     imports: [
         CommonModule,
@@ -18,10 +20,15 @@ import { ToastModule } from 'primeng/toast';
         InputTextModule,
         FormsModule,
         PasswordModule,
-        ToastModule
+        ToastModule,
+        PagesModule
     ],
     declarations: [
-      ForgotPasswordComponent
-    ]
+      ForgotPasswordComponent,
+      ResetPasswordComponent
+    ],
+    schemas: [
+      CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA
+    ],
 })
 export class AuthModule { }
