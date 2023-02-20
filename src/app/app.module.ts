@@ -1,3 +1,6 @@
+import { AuthGuardTeacher } from './app-management/service/authGuard-Teacher';
+import { AuthGuardStudent } from './app-management/service/authGuard-Student';
+import { AuthGuardAdmin } from './app-management/service/authGuard-Admin';
 import { PagesModule } from './app-management/components/pages/pages.module';
 import { AuthGuard } from './app-management/service/auth-guard';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -54,7 +57,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-      AuthGuard,JwtHelperService,{ provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+      AuthGuard,AuthGuardAdmin,AuthGuardStudent,AuthGuardTeacher,JwtHelperService,{ provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
         MessageService,ConfirmationService, {
             provide: DynamicDialogRef,
             useValue: {}

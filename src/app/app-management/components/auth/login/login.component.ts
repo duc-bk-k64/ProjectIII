@@ -46,7 +46,12 @@ export class LoginComponent {
            data => {
                
                     this.authService.setToken(data.id_token);
-                    this.router.navigate([this.authService.getRedirectUrl()]);
+                    localStorage.setItem("role",data.account.roles)
+                    if(data.account.roles == "STUDENT") {
+                        this.router.navigate(['pages/home-student']);
+
+                    } else
+                        this.router.navigate([this.authService.getRedirectUrl()]);
                
             },
             error => {
