@@ -50,4 +50,10 @@ export class ExamClassService extends BaseService{
             headers: this.sharedHeaders,
         })
     }
+    getListExamOfStudent(){
+        return this._http
+            .get<any>("/api/exam-classes-of-student", {
+                headers: this.sharedHeaders,
+            })
+    }
 }
