@@ -47,6 +47,7 @@ export class LoginComponent {
                
                     this.authService.setToken(data.id_token);
                     localStorage.setItem("role",data.account.roles)
+                    // console.log(data.account.roles)
                     if(data.account.roles == "STUDENT") {
                         this.router.navigate(['pages/home-student']);
 

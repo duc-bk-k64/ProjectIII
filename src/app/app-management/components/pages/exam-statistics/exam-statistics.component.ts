@@ -65,6 +65,9 @@ export class ExamStatisticsComponent implements OnInit {
       try {
         this.statisticsData=data;
         this.examClassName =  "BÀI THI ĐẠI SỐ TUYẾN TÍNH";
+        if(data == null) {
+            this.messageService.add({severity:"error", summary:"Không có dữ liệu"});
+        }
         // console.log(this.statisticsData);
      } catch (error) {
          this.messageService.add({severity:data.title, summary:data.detail});

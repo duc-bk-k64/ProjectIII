@@ -4,7 +4,7 @@ import { BaseClass } from 'src/app/BaseClass';
 import { ExamClassService } from 'src/app/app-management/service/examclass.service';
 import { MessageService } from 'primeng/api';
 import { getServerApiUrl, storageKey } from 'src/app/app-constant';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService  } from 'src/app/app-management/service/auth.service';
 @Component({
@@ -22,14 +22,13 @@ export class ViewExamComponent extends BaseClass implements OnInit  {
   isStart: boolean =true
   constructor(
     public service: ExamClassService, private httpClient: HttpClient, private router: Router, private messageService: MessageService,
-    private authService: AuthService
+    private authService: AuthService, private route : ActivatedRoute
   ) { super()}
 
   ngOnInit(): void {
     this.header = new HttpHeaders().set(storageKey.AUTHORIZATION, this.authService.getToken());
-    localStorage.setItem("studentId","4");
-    localStorage.setItem("examClassId","74");
-    this.getDetailExam(74)
+
+    this.getDetailExam(this.route.snapshot.params["id"])
    console.log(this.today)
    console.log(this.exam.startTime)
   }
@@ -40,6 +39,7 @@ export class ViewExamComponent extends BaseClass implements OnInit  {
           console.log(rs)
       
           this.exam=rs
+          localStorage.setItem("examName",this.exam.name);
           this.chenh=(new Date(this.exam.startTime).getTime()-this.today.getTime()) / (1000 * 60);
           if(this.chenh>0){
             this.isStart=true

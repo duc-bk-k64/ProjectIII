@@ -1,4 +1,7 @@
 <p-toast></p-toast>
+<div>
+    <h2 style="font-size: 28px;">{{examName}}</h2>
+</div>
 <app-loading *ngIf="loading"></app-loading>
 <p-table #dt1 [value]="listQs" [(selection)]="listQsSelected" [globalFilterFields]="['content','type','numberOfAnswer','images','level']"  responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple" [rowHover]="true" dataKey="id">
     <ng-template pTemplate="caption">
@@ -104,6 +107,18 @@
                         <p-columnFilter type="text" field="images" display="menu"></p-columnFilter>
                     </div>
                 </th>
+                <th>
+                    <div>
+                        Điểm
+                        <p-columnFilter type="text" field="images" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        Chi tiết
+                        <p-columnFilter type="text" field="images" display="menu"></p-columnFilter>
+                    </div>
+                </th>
                
                 <th style="width: 3rem">
                 </th>
@@ -117,8 +132,8 @@
                
                 <td>{{obj.student.fullname}}</td>
                 <td>{{obj.student.studentCode}}</td>
-                
-               
+                <td>{{obj.score}}</td>
+                <td>  <a routerLink="/pages/exam-result/{{examId}}/{{obj.student.id}}"> <u>Xem chi tiết </u></a></td>
             </tr>
     
         </ng-template>

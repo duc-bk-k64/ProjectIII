@@ -1,0 +1,133 @@
+<div style="width: 100%; padding: 15px" >
+    <div class="content p-12">
+        <h2 class="cssTieuDe">Danh sách lớp thi</h2>
+
+        <div class="table-container">
+
+            <div fxLayout="row"  fxLayoutWrap>
+                <div
+                    *ngFor="let item of listExam"
+                    [ngSwitch] = "item.state"
+                    style="cursor: pointer;"
+                >
+                <a routerLink="/pages/view-exam/{{item.id}}">
+                    <div class="class-item" *ngSwitchCase = "'timeout'"
+                    style="background-color: white; border-color: '#459C75'"
+                    >
+                        <div>
+                            <b style="font-size: 18px"
+                                >{{item.name}}
+                            </b>
+                            <p
+                                style="
+                                    font-size: 14px;
+                                    margin-top: 6px;
+                                    color: '#7E8489';
+                                "
+                            >
+                                Thời gian mở : {{item.startTime}}&emsp;•&emsp;{{item.endTime}}
+                            </p>
+                            <p style="font-size: 14px; color: '#7E8489'">
+                                Thời gian làm bài:
+                                <b style="color: '#3CA6B9'">{{item.duration}}</b>&emsp;•&emsp;Số
+                                câu hỏi: <b style="color: '#3CA6B9'">{{item.numberOfQuestions}} câu</b>
+                            </p>
+                        </div>
+                        <div style="align-items: end; text-align: end">
+                            <b style="color: '#459C75'; font-size: 18px"
+                                >Đã kết thúc</b
+                            >
+                            <!-- <p style="color: '#7E8489'; font-size: 18px">
+                                Điểm: <b style="color: '#3CA6B9'"> 7.5/10</b>
+                            </p> -->
+                        </div>
+                    </div>
+                    <div class="class-item" *ngSwitchCase = "'initial'"
+                    style="background-color: white; border-color: '#C5D1D1'"
+                >
+                    <div>
+                        <b style="font-size: 18px"
+                            >{{item.name}}
+                        </b>
+                        <p
+                            style="
+                                font-size: 14px;
+                                margin-top: 6px;
+                                color: '#7E8489';
+                            "
+                        >
+                        Thời gian mở : {{item.startTime}}&emsp;•&emsp;{{item.endTime}}
+                        </p>
+                        <p style="font-size: 14px; color: '#7E8489'">
+                            Thời gian làm bài:
+                            <b style="color: '#3CA6B9'">{{item.duration}}</b>&emsp;•&emsp;Số
+                            câu hỏi: <b style="color: '#3CA6B9'">{{item.numberOfQuestions}} câu</b>
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: '#7E8489'; font-size: 18px">
+                            Bắt đầu trong
+                            <b style="color: '#FAAB78'">
+                               {{item.countdown}}
+                            </b>
+                        </p>
+                    </div>
+                </div>
+                <div class="class-item" *ngSwitchCase ="'running'"
+                    style="background-color: white; border-color: '#D54561'"
+                >
+                    <div>
+                        <b style="font-size: 18px"
+                            >{{item.name}}
+                        </b>
+                        <p
+                            style="
+                                font-size: 14px;
+                                margin-top: 6px;
+                                color: '#7E8489';
+                            "
+                        >
+                        Thời gian mở : {{item.startTime}}&emsp;•&emsp;{{item.endTime}}
+                        </p>
+                        <p style="font-size: 14px; color: '#7E8489'">
+                            Thời gian làm bài:
+                            <b style="color: '#3CA6B9'">{{item.duration}}</b>&emsp; •&emsp;Số
+                            câu hỏi: <b style="color: '#3CA6B9'">{{item.numberOfQuestions}} câu</b>
+                          </p>
+                    </div>
+                    <div
+                        style="
+                            align-items: center;
+                            align-items: end;
+                            display: flex;
+                            flex-direction: column;
+                        "
+                    >
+                        <p style="color: '#7E8489'; font-size: 18px">
+                            Kết thúc sau <b style="color: '#D54561'">{{item.countdown}}</b>
+                        </p>
+                        <div
+                            style="
+                                text-align: end;
+                                background-color: '#D54561';
+                                padding: 7px 10px 7px 10px;
+                                border-radius: 18px;
+                                text-align: center;
+                                display: inline-block;
+                                cursor: pointer;
+                            "
+                        >
+                            <b style="color: white">Attemp quiz now</b>
+                        </div>
+                    </div>
+                </div>
+                    <div *ngSwitchCaseDefault>
+                        <a> Dang load </a>
+                    </div>
+                </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

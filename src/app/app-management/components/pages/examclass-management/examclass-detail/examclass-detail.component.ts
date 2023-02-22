@@ -20,14 +20,18 @@ export class ExamclassDetailComponent extends BaseClass implements OnInit  {
   listQsSelected:any[]=[];
   listSV:any[]=[];
   listSVSelected:any[]=[];
+  examId :any ;
+  examName :string ='';
   loading:boolean = true;
   constructor(public service: ExamClassService,public serviceSV: StudentService, private httpClient: HttpClient, private router: Router, private messageService: MessageService,
-    private authService: AuthService,private route: ActivatedRoute,public dialogService: DialogService) { super();}
+    private authService: AuthService,private route: ActivatedRoute,public dialogService: DialogService,) { super();}
 
   ngOnInit(): void {
-    this.getList(this.route.snapshot.params['id']),
-    this.getListSV(this.route.snapshot.params['id'])
+    this.examId = this.route.snapshot.params['id']
+    this.getList(this.examId),
+    this.getListSV(this.examId)
     this.header = new HttpHeaders().set(storageKey.AUTHORIZATION, this.authService.getToken());
+    this.loadExamInfo()
   }
   getList(id:any){  
     this.service.getListQs(id).pipe(this.unsubsribeOnDestroy)
@@ -87,4 +91,16 @@ export class ExamclassDetailComponent extends BaseClass implements OnInit  {
               
       });
   }
+  async loadExamInfo() {
+    await this.httpClient.get<any>("/api/exam-classes/"+this.examId,{headers: this.header}).toPromise().then(
+      data => {
+        this.examName = data?.name ||"Unknow" 
+      },
+      error => {
+        console.log(error)
+      }
+    );
+  }
+
+
 }

@@ -1,5 +1,6 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutService } from './service/app.layout.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService,private router: Router) { }
 
     ngOnInit() {
         this.loadModel();
@@ -89,7 +90,7 @@ export class AppMenuComponent implements OnInit {
             ];
 
         }
-        else {
+        else  if(role == "TEACHER") {
             this.model = [
                 {
                     label: 'Home',
@@ -130,6 +131,9 @@ export class AppMenuComponent implements OnInit {
              
             ];
 
+        }
+        else {
+            this.router.navigate(['/auth/access'])
         }
       
     }
