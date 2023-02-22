@@ -27,10 +27,10 @@ export class ExamPointStatisticsComponent extends BaseClass implements OnInit  {
   searchLopThi:any
   data: any;
   chartOptions : any;
- listDiemYeu:any
- listDiemKha:any
- listDiemGioi:any
-
+ listDiemYeu=0
+ listDiemKha=0
+ listDiemGioi=0
+ loading: boolean = false;
   constructor(public service: ExamClassService,public serviceSV: StudentService, private httpClient: HttpClient, private router: Router, private messageService: MessageService,
     private authService: AuthService,private route: ActivatedRoute) { 
     super()
@@ -41,25 +41,8 @@ export class ExamPointStatisticsComponent extends BaseClass implements OnInit  {
     this.getList()
     this.header = new HttpHeaders().set(storageKey.AUTHORIZATION, this.authService.getToken());
     this.getListSV()
-    this.data = {
-      labels: ['Điểm yếu','Điểm khá','Điểm giỏi'],
-            datasets: [
-                {
-                    data: [this.listDiemYeu, this.listDiemKha, this.listDiemGioi],
-                    backgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56"
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56"
-                    ]
-                }
-            ]
-     };
-  
+   
+  console.log(this.data)
   } 
   
   applyFilterGlobal($event: any, stringVal: any) {
@@ -70,6 +53,7 @@ export class ExamPointStatisticsComponent extends BaseClass implements OnInit  {
   .subscribe(
     (rs: any) => {
       console.log(rs)
+      this.loading = false;
       for(let i=0;i<rs.length;i++){
         if (rs[i].score) {
           if(rs[i].score>0 && rs[i].score<=4){
@@ -83,11 +67,31 @@ export class ExamPointStatisticsComponent extends BaseClass implements OnInit  {
           
         }
       }
+      this.data = {
+        labels: ['Điểm yếu (0-4)','Điểm khá(5-7)','Điểm giỏi(9-10)'],
+              datasets: [
+                  {
+                      data: [this.listDiemYeu, this.listDiemKha, this.listDiemGioi],
+                      backgroundColor: [
+                          "#FF6384",
+                          "#36A2EB",
+                          "#FFCE56"
+                      ],
+                      hoverBackgroundColor: [
+                          "#FF6384",
+                          "#36A2EB",
+                          "#FFCE56"
+                      ]
+                  }
+              ]
+       };
+      console.log(this.listDiemGioi)
       console.log(this.searchLopThi)
      this.listSV=rs
       
     },
   )
+  this.loading = true;
   }
   getList() {
     this.listExam = []

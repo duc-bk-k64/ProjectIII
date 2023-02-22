@@ -39,6 +39,7 @@ import { ViewExamComponent } from './view-exam/view-exam.component';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import { SubjectManagementComponent } from './subject-management/subject-management.component';
 import { QuestionManagementComponent } from './question-management/question-management.component';
+
 @NgModule({
     declarations: [
    
@@ -53,7 +54,8 @@ import { QuestionManagementComponent } from './question-management/question-mana
             LoadingComponent,
             ViewExamComponent,
             SubjectManagementComponent,
-            QuestionManagementComponent
+            QuestionManagementComponent,
+         
 
   ],
     imports: [
