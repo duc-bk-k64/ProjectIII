@@ -37,11 +37,13 @@ export class ExamclassDetailComponent extends BaseClass implements OnInit  {
     this.service.getListQs(id).pipe(this.unsubsribeOnDestroy)
     .subscribe(
       (rs: any) => {
+        this.loading = false;
         console.log(rs)
        this.listQs=rs
         
       },
-    )}
+    )
+    this.loading = true}
     deleteQs(item: any) {
 
       this.service.deleteQs(item.id).pipe(this.unsubsribeOnDestroy)
@@ -60,13 +62,16 @@ export class ExamclassDetailComponent extends BaseClass implements OnInit  {
     getListSV(id:any){
       this.serviceSV.getListSV(id).pipe(this.unsubsribeOnDestroy)
     .subscribe(
+      
       (rs: any) => {
+        this.loading = false;
         console.log(rs)
         
        this.listSV=rs
         
       },
     )
+    this.loading = true
     }
     openDialogAdd() {
       let item: any = {

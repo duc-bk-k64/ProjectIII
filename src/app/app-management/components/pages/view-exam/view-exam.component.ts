@@ -37,7 +37,7 @@ export class ViewExamComponent extends BaseClass implements OnInit  {
       .subscribe(
         (rs: any) => {
           console.log(rs)
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tìm kiếm thành công' });
+      
           this.exam=rs
           localStorage.setItem("examName",this.exam.name);
           this.chenh=(new Date(this.exam.startTime).getTime()-this.today.getTime()) / (1000 * 60);
@@ -49,7 +49,7 @@ export class ViewExamComponent extends BaseClass implements OnInit  {
         },
         error => {
           console.log(error)
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Có lỗi xảy ra' });
+         
         }
         
       )

@@ -23,7 +23,7 @@ export class ExamclassManagementComponent extends BaseClass implements OnInit {
   header: any;
 
   listExam: any[] = [];
-
+  loading:boolean = true;
 
   displayedColumns: string[] = ["name", "startTime", "endTime", "numberOfQuestion", "numberOfStudent"];
   dataTable: any = [];
@@ -48,10 +48,12 @@ export class ExamclassManagementComponent extends BaseClass implements OnInit {
   }
   getList() {
     this.listExam = []
+   
     this.service.getListExam().pipe(this.unsubsribeOnDestroy)
       .subscribe(
         (rs: any) => {
           console.log(rs)
+          this.loading = false;
           this.dataTable = rs.content
           rs.content.map((e: any,i:any) => {
             this.filteredLopThi.push({
@@ -64,14 +66,14 @@ export class ExamclassManagementComponent extends BaseClass implements OnInit {
           });
          
           console.log(this.filteredLopThi)
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Lấy dữ liệu thành công' });
+        
         },
         error => {
           console.log(error)
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Có lỗi xảy ra' });
-
+        
         }
       )
+      this.loading = true
   }
   openDialogAdd() {
     let item: any = {
@@ -113,8 +115,8 @@ export class ExamclassManagementComponent extends BaseClass implements OnInit {
         error => {
           console.log(error)
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Có lỗi xảy ra' });
-        }
-        
+        },
+         
       )
       this.getList()
   }
